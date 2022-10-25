@@ -64,7 +64,7 @@ int main(int argc, char **argv){
   camino.trayectoria.push_back(datos);
   while(ros::ok()){
     ros::spinOnce();
-    moverse a las cordenadas...
+    //moverse a las cordenadas...
     if(f==1){
     x=camino.trayectoria[c].x;
     y=camino.trayectoria[c].y;
