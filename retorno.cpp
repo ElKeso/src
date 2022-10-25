@@ -32,7 +32,7 @@ void posicion(const nav_msgs::Odometry &pos){
     cam=pos;
 }
 
-funciones Euclides
+//funciones Euclides
 float eu_lineal(float x, float y){
   v_l=sqrt(pow((x-cam.pose.pose.position.x),2)+pow((y-cam.pose.pose.position.y),2));
   return v_l;
