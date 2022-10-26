@@ -118,17 +118,16 @@ int main(int argc, char **argv){
             }
           }
         }
+        if(c==0){
+             mover.angular.z=0.4;
+            if(abs(cam.pose.pose.orientation.w)-1<t_a){
+                  mover.linear.x=0;
+                  mover.angular.z=0;
+                  pub.publish(mover);
+                  ros::shutdown();
+            }
       }
-      if(c==0){
-        mover.angular.z=0.4;
-        if(abs(cam.pose.pose.orientation.w)-1<t_a){
-          mover.linear.x=0;
-          mover.angular.z=0;
-          pub.publish(mover);
-          ros::shutdown();
-      }
-      }
-      
+    }
     pub.publish(mover);
     }//
     else{
