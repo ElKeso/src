@@ -44,28 +44,28 @@ float eu_angular(float x, float y){
 }
 
 float conv(float z, float w){ 
-  float r_min; float r_max; float rad_min float rad_max; float m;
+  float r_min; float r_max; float rad_min; float rad_max; float m;
     if(z*w>0){
         if(w<=1 && w>=0.7){
             r_min=1; r_max=0.7; rad_min=0; rad_max=PI/2;
-            m=(rad_max-rad_ain)/(r_max-r_min);
+            m=(rad_max-rad_min)/(r_max-r_min);
             v_c=m*(w-r_min)-rad_min;
         }
         if(w<0.7 && w>=0){
             r_min=0.7; r_max=0; rad_min=PI/2; rad_max=PI;
-            m=(rad_max-rad_ain)/(r_max-r_min);
+            m=(rad_max-rad_min)/(r_max-r_min);
             v_c=m*(w-r_min)-rad_min;  
         }
     }
     else{
         if(abs(w)<=1 && abs(w)>=0.7){
             r_min=1; r_max=0.7; rad_min=0; rad_max=-PI/2;
-            m=(rad_max-rad_ain)/(r_max-r_min);
+            m=(rad_max-rad_min)/(r_max-r_min);
             v_c=m*(w-r_min)-rad_min;
         }  
         if(abs(w)<0.7 && abs(w)>=0){
             r_min=0.7; r_max=0; rad_min=-PI/2; rad_max=-PI;
-            m=(rad_max-rad_ain)/(r_max-r_min);
+            m=(rad_max-rad_min)/(r_max-r_min);
             v_c=m*(w-r_min)-rad_min;
         }  
     }   
@@ -89,12 +89,12 @@ int main(int argc, char **argv){
   while(ros::ok()){
     ros::spinOnce();
     //moverse a las cordenadas...
-    if(f==1){
+    if(f==1){//
     x=camino.trayectoria[c].x;
     y=camino.trayectoria[c].y;
-      if(abs(eu_angular(x, y)-conv(cam.pose.pose.orientacion.z, cam.pose.pose.orientacion.w)>t_a){
+      if(abs(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>t_a){
         mover.linear.x=0;
-        if(abs(eu_angular(x, y)-conv(cam.pose.pose.orientacion.z, cam.pose.pose.orientacion.w)>0){
+        if(abs(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
           mover.angular.z=0.4;
         }
         else {
@@ -130,7 +130,7 @@ int main(int argc, char **argv){
       }
       
     pub.publish(mover);
-    }
+    }//
     else{
     }
     ROS_INFO("voy en %d y coordenadas son x=%f y=%f",c, x, y);
