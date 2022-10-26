@@ -43,8 +43,32 @@ float eu_angular(float x, float y){
   return v_a;
 }
 
-float conv(float x){
-  v_c=x/PI;
+float conv(float z, float w){ 
+  float r_min; float r_max; float rad_min float rad_max; float m;
+    if(z*w>0){
+        if(w<=1 && w>=0.7){
+            r_min=1; r_max=0.7; rad_min=0; rad_max=PI/2;
+            m=(rad_max-rad_ain)/(r_max-r_min);
+            v_c=m*(w-r_min)-rad_min;
+        }
+        if(w<0.7 && w>=0){
+            r_min=0.7; r_max=0; rad_min=PI/2; rad_max=PI;
+            m=(rad_max-rad_ain)/(r_max-r_min);
+            v_c=m*(w-r_min)-rad_min;  
+        }
+    }
+    else{
+        if(abs(w)<=1 && abs(w)>=0.7){
+            r_min=1; r_max=0.7; rad_min=0; rad_max=-PI/2;
+            m=(rad_max-rad_ain)/(r_max-r_min);
+            v_c=m*(w-r_min)-rad_min;
+        }  
+        if(abs(w)<0.7 && abs(w)>=0){
+            r_min=0.7; r_max=0; rad_min=-PI/2; rad_max=-PI;
+            m=(rad_max-rad_ain)/(r_max-r_min);
+            v_c=m*(w-r_min)-rad_min;
+        }  
+    }   
   return v_c;
 }
 
@@ -68,9 +92,9 @@ int main(int argc, char **argv){
     if(f==1){
     x=camino.trayectoria[c].x;
     y=camino.trayectoria[c].y;
-      if(abs(conv(eu_angular(x, y))-cam.pose.pose.orientation.z)>t_a){
+      if(abs(eu_angular(x, y)-conv(cam.pose.pose.orientacion.z, cam.pose.pose.orientacion.w)>t_a){
         mover.linear.x=0;
-        if(eu_angular(x, y)<0){
+        if(abs(eu_angular(x, y)-conv(cam.pose.pose.orientacion.z, cam.pose.pose.orientacion.w)>0){
           mover.angular.z=0.4;
         }
         else {
@@ -85,7 +109,7 @@ int main(int argc, char **argv){
         else {
           mover.linear.x=0;
           c=c-c_p;
-          if(c<=15){
+          if(c<=10){
             if(c==1){
               c=0;
             }
@@ -97,7 +121,7 @@ int main(int argc, char **argv){
       }
       if(c==0){
         mover.angular.z=0.4;
-        if(cam.pose.pose.orientation.z<=0.1){
+        if(abs(cam.pose.pose.orientation.w)-1<t_a){
           mover.linear.x=0;
           mover.angular.z=0;
           pub.publish(mover);
