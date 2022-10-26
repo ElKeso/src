@@ -92,9 +92,9 @@ int main(int argc, char **argv){
     if(f==1){//
     x=camino.trayectoria[c].x;
     y=camino.trayectoria[c].y;
-      if(abs(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>t_a){
+      if(abs(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w))>t_a){
         mover.linear.x=0;
-        if(abs(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
+        if(abs(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w))>0){
           mover.angular.z=0.4;
         }
         else {
