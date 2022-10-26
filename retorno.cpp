@@ -95,7 +95,7 @@ int main(int argc, char **argv){
       if(abs(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w))>t_a){
         //mover.linear.x=0;
         //if(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
-          mover.angular.z=0.4;
+          mover.angular.z=0.2;
         //}
         //else {
         //  mover.angular.z=-0.4;
@@ -119,7 +119,7 @@ int main(int argc, char **argv){
           }
         }
         if(c==0){
-             mover.angular.z=0.4;
+             mover.angular.z=0.2;
             if(abs(cam.pose.pose.orientation.w)-1<t_a){
                   mover.linear.x=0;
                   mover.angular.z=0;
