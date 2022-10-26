@@ -4,6 +4,7 @@
 
 nav_msgs::Odometry cam;
 float rad; float v_c;
+float PI=3.14159265;
 
 
 void posicion(const nav_msgs::Odometry &pos){
