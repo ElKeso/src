@@ -13,7 +13,7 @@
     int f=0; float cte=1.5;
     float PI = 3.14159265;
     float v_l; float v_a; float v_c;
-    float t_l=0.15; float t_a=0.015; 
+    float t_l=0.15; float t_a=0.15; 
     int i=0; int c; int c_p;
     float x; float y;
 
