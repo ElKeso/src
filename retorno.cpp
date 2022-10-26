@@ -15,7 +15,7 @@
     float v_l; float v_a; float v_c;
     float t_l=0.15; float t_a=0.15; 
     int i=0; int c; int c_p;
-    float x; float y;
+    float x; float y; float z; float w;
 
 void retorno(const retorno_autonomo::ret &r){
     c=r.datos;
@@ -92,7 +92,9 @@ int main(int argc, char **argv){
     if(f==1){//
     x=camino.trayectoria[c].x;
     y=camino.trayectoria[c].y;
-      if(abs(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w))>t_a){
+    z=cam.pose.pose.orientation.z;
+    w=cam.pose.pose.orientation.w;
+      if(abs(eu_angular(x, y)-conv(z, w))>t_a){
         //mover.linear.x=0;
         //if(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
           mover.angular.z=0.2;
@@ -117,7 +119,6 @@ int main(int argc, char **argv){
               c=1;
             }
           }
-        }
         if(c==0){
              mover.angular.z=0.2;
             if(abs(cam.pose.pose.orientation.w)-1<t_a){
@@ -126,7 +127,8 @@ int main(int argc, char **argv){
                   pub.publish(mover);
                   ros::shutdown();
             }
-      }
+          }
+       }
     }
     pub.publish(mover);
     }//
