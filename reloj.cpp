@@ -11,7 +11,7 @@ int main(int argc, char **argv)
   int cont=0;
   ros::Rate loop_rate(5);
   while (ros::ok()){
-    if(cont==20){
+    if(cont==30){
         r.ret=1;
         r.datos=cont;
         pub_ret.publish(r);
