@@ -107,14 +107,16 @@ int main(int argc, char **argv){
       else {
         robot.sleep();  
         mover.angular.z=0;
-        robot.sleep();    
+        robot.sleep();
+        pub.publish(mover);
         if((eu_lineal(x, y))>=t_l){
          mover.linear.x=0.2; 
         }
         else {
           robot.sleep();    
           mover.linear.x=0;
-          robot.sleep();    
+          robot.sleep();
+          pub.publish(mover);  
           c=c-c_p;
           if(c<=5){
             if(c==1){
@@ -125,7 +127,7 @@ int main(int argc, char **argv){
             }
           }
         if(c==0){
-             mover.angular.z=0.5;
+             mover.angular.z=0.2;
             if(abs(cam.pose.pose.orientation.w)-1<t_a){
                   robot.sleep();    
                   mover.linear.x=0;
