@@ -19,8 +19,8 @@
 
 void retorno(const retorno_autonomo::ret &r){
     c=r.datos;
-    c=c-2;
-    c_p=c/10;
+    c=c-2
+    c_p=c/2;
     f=r.ret;
 }
 
@@ -81,13 +81,14 @@ int main(int argc, char **argv){
   ros::Subscriber sub_ret = nh.subscribe("/retornar",1000, retorno);
   ros::Rate loop_rate(10000);
   ros::Rate rate(1);
+  ros::Rate robot(10);
   c=0;
   datos.x=c;
   datos.y=c;
   datos.theta=c;
   camino.trayectoria.push_back(datos);
   while(ros::ok()){
-    ros::spinOnce();
+    ros::spinOnce();  
     //moverse a las cordenadas...
     if(f==1){//
     x=camino.trayectoria[c].x;
@@ -100,18 +101,22 @@ int main(int argc, char **argv){
           mover.angular.z=0.2;
         //}
         //else {
-        //  mover.angular.z=-0.4;
+        //  mover.angular.z=-0.2;
         //} 
       }
       else {
+        robot.sleep();  
         mover.angular.z=0;
+        robot.sleep();    
         if((eu_lineal(x, y))>=t_l){
-         mover.linear.x=1.5; 
+         mover.linear.x=0.2; 
         }
         else {
+          robot.sleep();    
           mover.linear.x=0;
+          robot.sleep();    
           c=c-c_p;
-          if(c<=10){
+          if(c<=5){
             if(c==1){
               c=0;
             }
@@ -122,8 +127,10 @@ int main(int argc, char **argv){
         if(c==0){
              mover.angular.z=0.5;
             if(abs(cam.pose.pose.orientation.w)-1<t_a){
+                  robot.sleep();    
                   mover.linear.x=0;
                   mover.angular.z=0;
+                  robot.sleep();  
                   pub.publish(mover);
                   ros::shutdown();
             }
