@@ -113,7 +113,7 @@ int main(int argc, char **argv){
         pub.publish(mover);
         if((eu_lineal(x, y))>=t_l){
          mover.linear.x=0.2; 
-         mover.angular.z=0   
+         mover.angular.z=0;   
         }
         else {
           robot.sleep();    
