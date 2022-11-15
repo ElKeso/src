@@ -14,14 +14,15 @@
     float PI = 3.14159265;
     float v_l; float v_a; float v_c;
     float t_l=0.15; float t_a=0.10; 
-    int i=0; int c; int c_p;
+    int i=0; int c; int c_p; int stop =0;
     float x; float y; float z; float w;
 
 void retorno(const retorno_autonomo::ret &r){
     c=r.datos;
     c=c-2;
-    c_p=c/2;
+    c_p=2;
     f=r.ret;
+    stop=1;
 }
 
 void trayectoria(const retorno_autonomo::trayArray &t){
@@ -95,9 +96,13 @@ int main(int argc, char **argv){
     y=camino.trayectoria[c].y;
     z=cam.pose.pose.orientation.z;
     w=cam.pose.pose.orientation.w;
+    if(stop==1){
     mover.linear.x=0;
     mover.angular.z=0;
-    robot.sleep();
+    pub.publish(mover);    
+    robot.sleep();  
+    stop=0;    
+    }
       if(abs(eu_angular(x, y)-conv(z, w))>t_a){
         mover.linear.x=0;
         //if(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
