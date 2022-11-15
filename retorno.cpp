@@ -79,7 +79,7 @@ int main(int argc, char **argv){
   ros::Subscriber sub_cam = nh.subscribe("/camino", 1000, trayectoria);
   ros::Subscriber sub_pos = nh.subscribe("/RosAria/pose", 1000, posicion);
   ros::Subscriber sub_ret = nh.subscribe("/retornar",1000, retorno);
-  ros::Rate loop_rate(10000);
+  ros::Rate loop_rate(100);
   ros::Rate rate(1);
   ros::Rate robot(1);
   c=0;
