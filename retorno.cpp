@@ -81,7 +81,7 @@ int main(int argc, char **argv){
   ros::Subscriber sub_ret = nh.subscribe("/retornar",1000, retorno);
   ros::Rate loop_rate(10000);
   ros::Rate rate(1);
-  ros::Rate robot(10);
+  ros::Rate robot(0.1);
   c=0;
   datos.x=c;
   datos.y=c;
