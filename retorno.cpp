@@ -13,7 +13,7 @@
     int f=0; float cte=1.5;
     float PI = 3.14159265;
     float v_l; float v_a; float v_c;
-    float t_l=0.15; float t_a=0.050; 
+    float t_l=0.15; float t_a=0.10; 
     int i=0; int c; int c_p;
     float x; float y; float z; float w;
 
@@ -81,7 +81,7 @@ int main(int argc, char **argv){
   ros::Subscriber sub_ret = nh.subscribe("/retornar",1000, retorno);
   ros::Rate loop_rate(100);
   ros::Rate rate(1);
-  ros::Rate robot(1);
+  ros::Rate robot(0.9);
   c=0;
   datos.x=c;
   datos.y=c;
@@ -95,11 +95,13 @@ int main(int argc, char **argv){
     y=camino.trayectoria[c].y;
     z=cam.pose.pose.orientation.z;
     w=cam.pose.pose.orientation.w;
+    mover.linear.x=0;
+    mover.angular.z=0;
+    robot.sleep();
       if(abs(eu_angular(x, y)-conv(z, w))>t_a){
-        //mover.linear.x=0;
+        mover.linear.x=0;
         //if(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
           mover.angular.z=0.2;
-          mover.linear.x=0;
         //}
         //else {
         //  mover.angular.z=-0.2;
@@ -110,7 +112,6 @@ int main(int argc, char **argv){
         mover.angular.z=0;
         mover.linear.x=0;  
         robot.sleep();
-        pub.publish(mover);
         if((eu_lineal(x, y))>=t_l){
          mover.linear.x=0.2; 
          mover.angular.z=0;   
@@ -119,8 +120,7 @@ int main(int argc, char **argv){
           robot.sleep();    
           mover.linear.x=0;
           mover.angular.z=0;  
-          robot.sleep();
-          pub.publish(mover);  
+          robot.sleep(); 
           c=c-c_p;
           if(c<=5){
             if(c==1){
@@ -148,7 +148,7 @@ int main(int argc, char **argv){
     }//
     else{
     }
-    ROS_INFO("voy en %d y coordenadas son x=%f y=%f",c, x, y);
+    ROS_INFO("voy en %d y coordenadas son x=%f y=%f y el angulo es %f",c, x, y, conv(z,w));
     loop_rate.sleep();
   }
 return 0; 
