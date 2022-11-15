@@ -19,7 +19,7 @@
 
 void retorno(const retorno_autonomo::ret &r){
     c=r.datos;
-    c=c-2
+    c=c-2;
     c_p=c/2;
     f=r.ret;
 }
