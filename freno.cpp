@@ -20,14 +20,22 @@ int main(int argc, char **argv){
             flag=1;
         break;
         case 1:
-            for(int i=0; i<8; i=i+1){
+            for(int i=0; i<10 i=i+1){
                 mover.linear.x=-a;
                 pub.publish(mover);
-                if(i==7){
-                    ros::shutdown();
                 }
-            }
-        break; 
+            flag = 2;
+        break;
+        case 2:
+                for(int i=0; i<5 i=i+1){
+                mover.linear.x=0;
+                pub.publish(mover);
+                }
+              flag = 3;
+        break;  
+      case 3:
+        ros::shutdown();  
+      break;
     }
   }
   return 0;
