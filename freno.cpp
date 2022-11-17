@@ -25,6 +25,9 @@ int main(int argc, char **argv){
                 mover.linear.x=-0.2;
                 pub.publish(mover);
                 mover.linear.x=mover.linear.x+0.02;
+                if(mover.linear.x==0){
+                    ros::shutdown();
+                }
             }
         break;
         default: pub.publish(mover);
