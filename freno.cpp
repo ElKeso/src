@@ -14,7 +14,7 @@ int main(int argc, char **argv){
     switch(flag){
         case 0:
             for(int i=0; i<=10; i=i+1){
-                mover.linear.x=0.2;
+                mover.linear.x=1;
                 pub.publish(mover);
                 loop_rate.sleep();
             }
@@ -22,9 +22,9 @@ int main(int argc, char **argv){
         break;
         case 1:
             for(int i=0; i<=10; i=i+1){
-                mover.linear.x=-0.2;
+                mover.linear.x=-1;
                 pub.publish(mover);
-                mover.linear.x=mover.linear.x+0.02;
+                mover.linear.x=mover.linear.x=0.1nnn  ;
                 if(mover.linear.x==0){
                     ros::shutdown();
                 }
