@@ -23,6 +23,7 @@ int main(int argc, char **argv){
             for(int i=0; i<10; i=i+1){
                 mover.linear.x=-a;
                 pub.publish(mover);
+              loop_rate.sleep();
                 }
             flag = 2;
         break;
@@ -30,6 +31,7 @@ int main(int argc, char **argv){
                 for(int i=0; i<5; i=i+1){
                 mover.linear.x=0;
                 pub.publish(mover);
+                  loop_rate.sleep();
                 }
               flag = 3;
         break;  
