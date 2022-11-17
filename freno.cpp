@@ -13,14 +13,14 @@ int main(int argc, char **argv){
   while (ros::ok()){
     switch(flag){
         case 0:
-            for(int i=0; i<80; i=i+1){
+            for(int i=0; i<50; i=i+1){
                 ROS_INFO("voy a detenerme en 50 y voy en %d" ,i);
                 loop_rate.sleep();
             }
             flag=1;
         break;
         case 1:
-            for(int i=0; i<10; i=i+1){
+            for(int i=0; i<30; i=i+1){
                 mover.linear.x=-a;
                 pub.publish(mover);
               loop_rate.sleep();
@@ -28,7 +28,7 @@ int main(int argc, char **argv){
             flag = 2;
         break;
         case 2:
-                for(int i=0; i<5; i=i+1){
+                for(int i=0; i<10; i=i+1){
                 mover.linear.x=0;
                 pub.publish(mover);
                   loop_rate.sleep();
