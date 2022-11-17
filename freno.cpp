@@ -24,7 +24,7 @@ int main(int argc, char **argv){
             for(int i=0; i<=10; i=i+1){
                 mover.linear.x=-1;
                 pub.publish(mover);
-                mover.linear.x=mover.linear.x=0.1;
+                mover.linear.x=mover.linear.x+0.1;
                 if(mover.linear.x==0){
                     ros::shutdown();
                 }
