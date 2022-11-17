@@ -27,8 +27,7 @@ int main(int argc, char **argv){
                     ros::shutdown();
                 }
             }
-        break;
-        default: 
+        break; 
     }
   }
   return 0;
