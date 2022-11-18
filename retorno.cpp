@@ -16,6 +16,8 @@
     float t_l=0.15; float t_a=0.10; 
     int i=0; int c; int c_p; int stop=0;
     float x; float y; float z; float w;
+    ros::Rate loop_rate(100);//rate del while
+    ros::Rate robot(10);// publicacion para moverse
 
 
 void retorno(const retorno_autonomo::ret &r){
@@ -163,8 +165,7 @@ int main(int argc, char **argv){
   ros::Subscriber sub_cam = nh.subscribe("/camino", 1000, trayectoria);
   ros::Subscriber sub_pos = nh.subscribe("/RosAria/pose", 1000, posicion);
   ros::Subscriber sub_ret = nh.subscribe("/retornar",1000, retorno);
-  ros::Rate loop_rate(100);//rate del while
-  ros::Rate robot(10);// publicacion para moverse
+
   c=0;
   datos.x=c;
   datos.y=c;
@@ -186,24 +187,24 @@ int main(int argc, char **argv){
          
       case 2://avanzamos hasta avanzar la distancia determinada
         linear();
-      break:
+      break;
 
       case 3://cambiamos coordenadas de trayectoria
         nextcoord();
-      break:
+      break;
 
       case 4://rotamos al angulo de origen
         fin();
-      break:
+      break;
 
       case 5://apagamos
         ros::shutdown();
-      break:
+      break;
 
       case 6://frenar primero!
         //frenar...
         stop=1;
-      break:
+      break;
      //hacer default para no hacer nada y esperar denuevo otro retorno
     }
 //
