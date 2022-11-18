@@ -31,7 +31,7 @@ int main(int argc, char **argv){
             flag = 2;
         break;
         case 2:
-                for(int i=0; i<100; i=i+1){
+                for(int i=0; i<1000; i=i+1){
                 mover.linear.x=0;
                 pub.publish(mover);
                 }
