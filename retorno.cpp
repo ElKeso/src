@@ -16,8 +16,7 @@
     float t_l=0.15; float t_a=0.10; 
     int i=0; int c; int c_p; int stop=0;
     float x; float y; float z; float w;
-    ros::Rate loop_rate(100);//rate del while
-    ros::Rate robot(10);// publicacion para moverse
+
 
 
 void retorno(const retorno_autonomo::ret &r){
@@ -78,7 +77,6 @@ float conv(float z, float w){
   return v_c;
 }
 //
-
 //funciones secuenciales//
 void angulo(){//funcion para rotar
   if(abs(eu_angular(x, y)-conv(z, w))>t_a){
@@ -165,7 +163,8 @@ int main(int argc, char **argv){
   ros::Subscriber sub_cam = nh.subscribe("/camino", 1000, trayectoria);
   ros::Subscriber sub_pos = nh.subscribe("/RosAria/pose", 1000, posicion);
   ros::Subscriber sub_ret = nh.subscribe("/retornar",1000, retorno);
-
+  ros::Rate loop_rate(100);//rate del while
+  ros::Rate robot(10);// publicacion para moverse
   c=0;
   datos.x=c;
   datos.y=c;
@@ -179,22 +178,78 @@ int main(int argc, char **argv){
     y=camino.trayectoria[c].y;
     z=cam.pose.pose.orientation.z;
     w=cam.pose.pose.orientation.w;
- //empieza secuencia de retorno
+    //empieza secuencia de retorno
     switch(stop){
       case 1://rotamos para llegar al angulo correcto
-        angulo();
+        //funcion para rotar
+        if(abs(eu_angular(x, y)-conv(z, w))>t_a){
+          mover.linear.x=0;
+          if(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
+            mover.angular.z=0.2;
+          }
+          else {
+            mover.angular.z=-0.2;
+          } 
+        }
+        else{
+          //frenar...
+          stop=2;
+        }
+        pub.publish(mover);
+        robot.sleep();
       break;
          
       case 2://avanzamos hasta avanzar la distancia determinada
-        linear();
+      //funcion para avanzar
+        if((eu_lineal(x, y))>=t_l){
+          mover.linear.x=0.2; 
+          mover.angular.z=0;   
+        }
+        else{
+          //frenamos...
+          stop=3;
+        }
+        pub.publish(mover);
+        robot.sleep();
       break;
 
       case 3://cambiamos coordenadas de trayectoria
-        nextcoord();
+        //funcion para recorrer matriz de coordenadas
+          c=c-c_p;
+          if(c>5){
+            stop=1;
+          }
+          else{
+            if(c<=5){
+              if(c==1){
+                c=0;
+                stop=4;
+              }
+              else{
+                c=1;
+                stop=1;
+              }
+            }
+          }
+  //pub.publish(mover);
       break;
 
       case 4://rotamos al angulo de origen
-        fin();
+        //funcion para rotar robot a su posicion original
+        if(c==0){
+          mover.angular.z=0.2;
+          mover.linear.x=0;
+          if(abs(cam.pose.pose.orientation.w)-1<t_a){
+            //frenamos...  
+            mover.linear.x=0;
+            mover.angular.z=0;
+          }
+          else{
+            stop=5;
+          }
+        }
+        pub.publish(mover);
+        robot.sleep();
       break;
 
       case 5://apagamos
@@ -203,6 +258,10 @@ int main(int argc, char **argv){
 
       case 6://frenar primero!
         //frenar...
+        for(int i=0; i<1000; i=i+1){
+          mover.linear.x=0;
+          pub.publish(mover);
+        }
         stop=1;
       break;
      //hacer default para no hacer nada y esperar denuevo otro retorno
@@ -214,4 +273,3 @@ int main(int argc, char **argv){
   }
 return 0; 
 }
-
