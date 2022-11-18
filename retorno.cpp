@@ -78,82 +78,82 @@ float conv(float z, float w){
 }
 //
 //funciones secuenciales//
-void angulo(){//funcion para rotar
-  if(abs(eu_angular(x, y)-conv(z, w))>t_a){
-    mover.linear.x=0;
-    if(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
-      mover.angular.z=0.2;
-    }
-    else {
-      mover.angular.z=-0.2;
-    } 
-  }
-  else{
-    //frenar...
-    stop=2;
-  }
-  pub.publish(mover);
-  robot.sleep();
-}
+//void angulo(){//funcion para rotar
+//  if(abs(eu_angular(x, y)-conv(z, w))>t_a){
+//    mover.linear.x=0;
+//    if(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
+//      mover.angular.z=0.2;
+//    }
+//    else {
+//      mover.angular.z=-0.2;
+//    } 
+//  }
+//  else{
+//    //frenar...
+//    stop=2;
+//  }
+//  pub.publish(mover);
+//  robot.sleep();
+//}
 
-void linear(){//funcion para avanzar
-  if((eu_lineal(x, y))>=t_l){
-    mover.linear.x=0.2; 
-    mover.angular.z=0;   
-  }
-  else{
-    //frenamos...
-    stop=3;
-  }
-  pub.publish(mover);
-  robot.sleep();
-}
+////void linear(){//funcion para avanzar
+//  if((eu_lineal(x, y))>=t_l){
+//    mover.linear.x=0.2; 
+//    mover.angular.z=0;   
+//  }
+//  else{
+//    //frenamos...
+//    stop=3;
+//  }
+//pub.publish(mover);
+//  robot.sleep();
+//}
 
-void nextcoord(){//funcion para recorrer matriz de coordenadas
-  c=c-c_p;
-  if(c>5){
-    stop=1;
-  }
-  else{
-    if(c<=5){
-      if(c==1){
-        c=0;
-        stop=4;
-      }
-    else{
-      c=1;
-      stop=1;
-    }
-    }
-  }
+//void nextcoord(){//funcion para recorrer matriz de coordenadas
+//  c=c-c_p;
+//  if(c>5){
+//    stop=1;
+//  }
+// else{
+//    if(c<=5){
+//      if(c==1){
+//        c=0;
+//        stop=4;
+//      }
+//    else{
+//      c=1;
+//      stop=1;
+//    }
+//    }
+ // }
   //pub.publish(mover);
-}
+//}
 
-void fin(){//funcion para rotar robot a su posicion original
-  if(c==0){
-    mover.angular.z=0.2;
-    mover.linear.x=0;
-    if(abs(cam.pose.pose.orientation.w)-1<t_a){
-      //frenamos...  
-      mover.linear.x=0;
-      mover.angular.z=0;
-    }
-    else{
-      stop=5;
-    }
-  }
-  pub.publish(mover);
-  robot.sleep();
-}
+//void fin(){//funcion para rotar robot a su posicion original
+//  if(c==0){
+//    mover.angular.z=0.2;
+//    mover.linear.x=0;
+//    if(abs(cam.pose.pose.orientation.w)-1<t_a){
+//      //frenamos...  
+//      mover.linear.x=0;
+//      mover.angular.z=0;
+//    }
+//    else{
+//      stop=5;
+//    }
+//  }
+//  pub.publish(mover);
+//  robot.sleep();
+//}
 //
 
 //funcion para frenar el robot
-void frenos(){
-  for(int i=0; i<1000; i=i+1){
-    mover.linear.x=0;
-    pub.publish(mover);
-  }
-}
+//void frenos(){
+//  for(int i=0; i<1000; i=i+1){
+//    mover.linear.x=0;
+//    pub.publish(mover);
+//  }
+//}
 //
 
 int main(int argc, char **argv){
