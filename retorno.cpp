@@ -14,15 +14,16 @@
     float PI = 3.14159265;
     float v_l; float v_a; float v_c;
     float t_l=0.15; float t_a=0.10; 
-    int i=0; int c; int c_p; int stop =0;
+    int i=0; int c; int c_p; int stop=0;
     float x; float y; float z; float w;
+
 
 void retorno(const retorno_autonomo::ret &r){
     c=r.datos;
     c=c-2;
     c_p=2;
     f=r.ret;
-    stop=1;
+    stop=6;
 }
 
 void trayectoria(const retorno_autonomo::trayArray &t){
@@ -43,7 +44,9 @@ float eu_angular(float x, float y){
   v_a=atan2(y-cam.pose.pose.position.y,x-cam.pose.pose.position.x);
   return v_a;
 }
+//
 
+//transformar coordenadas rotatorias del robot a radianes
 float conv(float z, float w){ 
   float r_min; float r_max; float rad_min; float rad_max; float m;
     if(z*w>0){
@@ -72,6 +75,86 @@ float conv(float z, float w){
     }   
   return v_c;
 }
+//
+
+//funciones secuenciales//
+void angulo(){//funcion para rotar
+  if(abs(eu_angular(x, y)-conv(z, w))>t_a){
+    mover.linear.x=0;
+    if(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
+      mover.angular.z=0.2;
+    }
+    else {
+      mover.angular.z=-0.2;
+    } 
+  }
+  else{
+    //frenar...
+    stop=2;
+  }
+  pub.publish(mover);
+  robot.sleep();
+}
+
+void linear(){//funcion para avanzar
+  if((eu_lineal(x, y))>=t_l){
+    mover.linear.x=0.2; 
+    mover.angular.z=0;   
+  }
+  else{
+    //frenamos...
+    stop=3;
+  }
+  pub.publish(mover);
+  robot.sleep();
+}
+
+void nextcoord(){//funcion para recorrer matriz de coordenadas
+  c=c-c_p;
+  if(c>5){
+    stop=1;
+  }
+  else{
+    if(c<=5){
+      if(c==1){
+        c=0;
+        stop=4;
+      }
+    else{
+      c=1;
+      stop=1;
+    }
+    }
+  }
+  //pub.publish(mover);
+}
+
+void fin(){//funcion para rotar robot a su posicion original
+  if(c==0){
+    mover.angular.z=0.2;
+    mover.linear.x=0;
+    if(abs(cam.pose.pose.orientation.w)-1<t_a){
+      //frenamos...  
+      mover.linear.x=0;
+      mover.angular.z=0;
+    }
+    else{
+      stop=5;
+    }
+  }
+  pub.publish(mover);
+  robot.sleep();
+}
+//
+
+//funcion para frenar el robot
+void frenos(){
+  for(int i=0; i<1000; i=i+1){
+    mover.linear.x=0;
+    pub.publish(mover);
+  }
+}
+//
 
 int main(int argc, char **argv){
   ros::init(argc, argv, "retorno");
@@ -80,9 +163,8 @@ int main(int argc, char **argv){
   ros::Subscriber sub_cam = nh.subscribe("/camino", 1000, trayectoria);
   ros::Subscriber sub_pos = nh.subscribe("/RosAria/pose", 1000, posicion);
   ros::Subscriber sub_ret = nh.subscribe("/retornar",1000, retorno);
-  ros::Rate loop_rate(100);
-  ros::Rate rate(1);
-  ros::Rate robot(0.9);
+  ros::Rate loop_rate(100);//rate del while
+  ros::Rate robot(10);// publicacion para moverse
   c=0;
   datos.x=c;
   datos.y=c;
@@ -96,65 +178,38 @@ int main(int argc, char **argv){
     y=camino.trayectoria[c].y;
     z=cam.pose.pose.orientation.z;
     w=cam.pose.pose.orientation.w;
-    if(stop==1){
-    mover.linear.x=0;
-    mover.angular.z=0;
-    pub.publish(mover);    
-    robot.sleep();  
-    stop=0;    
+ //empieza secuencia de retorno
+    switch(stop){
+      case 1://rotamos para llegar al angulo correcto
+        angulo();
+      break;
+         
+      case 2://avanzamos hasta avanzar la distancia determinada
+        linear();
+      break:
+
+      case 3://cambiamos coordenadas de trayectoria
+        nextcoord();
+      break:
+
+      case 4://rotamos al angulo de origen
+        fin();
+      break:
+
+      case 5://apagamos
+        ros::shutdown();
+      break:
+
+      case 6://frenar primero!
+        //frenar...
+        stop=1;
+      break:
+     //hacer default para no hacer nada y esperar denuevo otro retorno
     }
-      if(abs(eu_angular(x, y)-conv(z, w))>t_a){
-        mover.linear.x=0;
-        //if(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
-          mover.angular.z=0.2;
-        //}
-        //else {
-        //  mover.angular.z=-0.2;
-        //} 
-      }
-      else {
-        robot.sleep();  
-        mover.angular.z=0;
-        mover.linear.x=0;  
-        robot.sleep();
-        if((eu_lineal(x, y))>=t_l){
-         mover.linear.x=0.2; 
-         mover.angular.z=0;   
-        }
-        else {
-          robot.sleep();    
-          mover.linear.x=0;
-          mover.angular.z=0;  
-          robot.sleep(); 
-          c=c-c_p;
-          if(c<=5){
-            if(c==1){
-              c=0;
-            }
-            else{
-              c=1;
-            }
-          }
-        if(c==0){
-             mover.angular.z=0.2;
-             mover.linear.x=0;
-            if(abs(cam.pose.pose.orientation.w)-1<t_a){
-                  robot.sleep();    
-                  mover.linear.x=0;
-                  mover.angular.z=0;
-                  robot.sleep();  
-                  pub.publish(mover);
-                  ros::shutdown();
-            }
-          }
-       }
-    }
-    pub.publish(mover);
-    }//
-    else{
-    }
-    ROS_INFO("voy en %d y coordenadas son x=%f y=%f y el angulo es %f",c, x, y, conv(z,w));
+//
+    ROS_INFO("voy en %d y coordenadas son x=%f y=%f y el angulo es %f",c, x, y, eu_angular(x, y));
     loop_rate.sleep();
+    }
   }
 return 0; 
 }
