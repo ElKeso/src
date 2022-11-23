@@ -187,12 +187,13 @@ int main(int argc, char **argv){
         //funcion para rotar
         if(abs(eu_angular(x, y)-conv(z, w))>t_a){
           mover.linear.x=0;
-          if(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
-            mover.angular.z=0.2;
-          }
-          else {
-            mover.angular.z=-0.2;
-          } 
+          mover.angular.z=0.2;
+          //if(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
+          //  mover.angular.z=0.2;
+          //}
+          //else {
+          //  mover.angular.z=-0.2;
+          //} 
         }
         else{
           //frenar...
