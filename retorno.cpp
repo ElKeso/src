@@ -166,7 +166,7 @@ int main(int argc, char **argv){
   ros::Subscriber sub_cam = nh.subscribe("/camino", 1000, trayectoria);
   ros::Subscriber sub_pos = nh.subscribe("/RosAria/pose", 1000, posicion);
   ros::Subscriber sub_ret = nh.subscribe("/retornar",1000, retorno);
-  ros::Rate loop_rate(100);//rate del while
+  ros::Rate loop_rate(1000);//rate del while
   ros::Rate robot(10);// publicacion para moverse
   c=0;
   datos.x=c;
@@ -187,7 +187,7 @@ int main(int argc, char **argv){
         //funcion para rotar
         if(abs(eu_angular(x, y)-conv(z, w))>t_a){
           mover.linear.x=0;
-          mover.angular.z=0.1;
+          mover.angular.z=0.2;
           //if(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
           //  mover.angular.z=0.2;
           //}
@@ -247,7 +247,7 @@ int main(int argc, char **argv){
 
           if(abs(conv(z, w))>0.01){
             mover.linear.x=0;
-            mover.angular.z=0.1;
+            mover.angular.z=0.2;
           }
           else{
              //frenamos...
@@ -274,7 +274,7 @@ int main(int argc, char **argv){
      //hacer default para no hacer nada y esperar denuevo otro retorno
     }
 //
-    ROS_INFO("Estoy en la secuencia %d, voy en %d y coordenadas son x=%f y=%f y el angulo es %f" , stop, c, x, y, cam.pose.pose.orientation.w);
+    ROS_INFO("Estoy en la secuencia %d, voy en %d y coordenadas son x=%f y=%f y el angulo es %f" , stop, c, x, y, eu_angular(x, y));
     loop_rate.sleep();
     }
   }
