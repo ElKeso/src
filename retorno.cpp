@@ -73,7 +73,10 @@ float conv(float z, float w){
             m=(rad_max-rad_min)/(r_max-r_min);
             v_c=m*(w-r_min)+rad_min;
         }  
-    }   
+    }
+    if(abs(v_c)==PI){
+        v_c=PI;
+    }
   return v_c;
 }
 //
@@ -193,6 +196,8 @@ int main(int argc, char **argv){
         }
         else{
           //frenar...
+          mover.linear.x=0;
+          mover.angular.z=0;
           stop=2;
         }
         pub.publish(mover);
@@ -207,6 +212,8 @@ int main(int argc, char **argv){
         }
         else{
           //frenamos...
+          mover.linear.x=0;
+          mover.angular.z=0;
           stop=3;
         }
         pub.publish(mover);
@@ -221,7 +228,7 @@ int main(int argc, char **argv){
           }
           else{
             if(c<=5){
-              if(c==1){
+              if(c<=1){
                 c=0;
                 stop=4;
               }
@@ -236,18 +243,17 @@ int main(int argc, char **argv){
 
       case 4://rotamos al angulo de origen
         //funcion para rotar robot a su posicion original
-        if(c==0){
-          mover.angular.z=0.2;
-          mover.linear.x=0;
-          if(abs(cam.pose.pose.orientation.w)-1<t_a){
-            //frenamos...  
+
+          if(abs(conv(z, w))>0.01){
             mover.linear.x=0;
-            mover.angular.z=0;
+            mover.angular.z=0.2;
           }
           else{
+             //frenamos...
+            mover.linear.x=0;
+            mover.angular.z=0;            
             stop=5;
           }
-        }
         pub.publish(mover);
         robot.sleep();
       break;
