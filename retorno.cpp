@@ -134,7 +134,7 @@ float conv(float z, float w){
 
 //void fin(){//funcion para rotar robot a su posicion original
 //  if(c==0){
-//    mover.angular.z=0.2;
+//    mover.angular.z=0.1;
 //    mover.linear.x=0;
 //    if(abs(cam.pose.pose.orientation.w)-1<t_a){
 //      //frenamos...  
@@ -187,7 +187,7 @@ int main(int argc, char **argv){
         //funcion para rotar
         if(abs(eu_angular(x, y)-conv(z, w))>t_a){
           mover.linear.x=0;
-          mover.angular.z=0.2;
+          mover.angular.z=0.1;
           //if(eu_angular(x, y)-conv(cam.pose.pose.orientation.z, cam.pose.pose.orientation.w)>0){
           //  mover.angular.z=0.2;
           //}
@@ -247,7 +247,7 @@ int main(int argc, char **argv){
 
           if(abs(conv(z, w))>0.01){
             mover.linear.x=0;
-            mover.angular.z=0.2;
+            mover.angular.z=0.1;
           }
           else{
              //frenamos...
