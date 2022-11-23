@@ -274,7 +274,7 @@ int main(int argc, char **argv){
      //hacer default para no hacer nada y esperar denuevo otro retorno
     }
 //
-    ROS_INFO("voy en %d y coordenadas son x=%f y=%f y el angulo es %f",c, x, y, eu_angular(x, y));
+    ROS_INFO("Estoy en la secuencia %d, voy en %d y coordenadas son x=%f y=%f y el angulo es %f" , stop, c, x, y, eu_angular(x, y));
     loop_rate.sleep();
     }
   }
