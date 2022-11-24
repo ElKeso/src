@@ -3,7 +3,7 @@
 #include "geometry_msgs/Twist.h"
 #include "math.h"
 
-geometry_msgs::Twist mover
+geometry_msgs::Twist mover;
 nav_msgs::Odometry cam;
 float rad; float v_c;
 float PI=3.14159265;
