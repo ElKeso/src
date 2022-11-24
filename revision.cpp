@@ -19,7 +19,7 @@ float conv(float z, float w){
         if(w<=1 && w>=0.7){
             r_min=1; r_max=0.7; rad_min=0; rad_max=PI/2;
             m=(rad_max-rad_min)/(r_max-r_min);
-            v_c=m*(w-r_min)+rad_min;
+            v_c=m*(abs(w)-r_min)+rad_min; 
         }
         if(w<0.7 && w>=0){
             r_min=0.7; r_max=0; rad_min=PI/2; rad_max=PI;
@@ -31,13 +31,13 @@ float conv(float z, float w){
         if(abs(w)<=1 && abs(w)>=0.7){
             r_min=1; r_max=0.7; rad_min=0; rad_max=PI/2;
             m=(rad_max-rad_min)/(r_max-r_min);
-            v_c=m*(w-r_min)+rad_min;
+            v_c=m*(abs(w)-r_min)+rad_min; 
             v_c=v_c*-1;
         }  
         if(abs(w)<0.7 && abs(w)>=0){
             r_min=0.7; r_max=0; rad_min=PI/2; rad_max=PI;
             m=(rad_max-rad_min)/(r_max-r_min);
-            v_c=m*(w-r_min)+rad_min;
+            v_c=m*(abs(w)-r_min)+rad_min; 
             v_c=v_c*-1;
         }  
     }   
